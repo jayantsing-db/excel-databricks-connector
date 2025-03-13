@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Databricks SQL Connector</title>
+
+    <!-- Office JavaScript API -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
+    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui -->
+    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"/>
+
+    <!-- Template styles -->
+    <link href="app.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript">
+        // Added error logging
+        Office.onReady((info) => {
+            console.log("Office.onReady called", info);
+            if (info.host === Office.HostType.Excel) {
+                console.log("Excel detected!");
+                // Initialize your app
+                document.getElementById('status').textContent = "Databricks Add-in is in—let the data games begin!";
+                document.getElementById('status').className = "status-message status-success";
+            } else {
+                console.log("Not running in Excel", info);
+                document.getElementById('status').textContent = "Not running in Excel. Host: " + (info.host || "unknown");
+                document.getElementById('status').className = "status-message status-error";
+            }
+        });
+
+        window.onerror = function(message, source, lineno, colno, error) {
+            console.log("Error caught:", message, "at", source, lineno, colno);
+            document.getElementById('status').textContent = "Error: " + message;
+            document.getElementById('status').className = "status-message status-error";
+            return false;
+        };
+    </script>
+
+    <script type="text/javascript" src="app.js"></script>
+</head>
+
+<body class="ms-font-m ms-Fabric">
+<div id="container">
+    <header class="ms-bgColor-themePrimary ms-fontColor-white">
+        <h1>Databricks SQL Connector</h1>
+    </header>
+    <section id="main-content" class="ms-fontColor-neutralPrimary">
+        <div class="form-group">
+            <label class="ms-Label">Databricks Host</label>
+            <input type="text" id="databricks-host" class="ms-TextField-field" placeholder="https://dbc-xxxxxxxx-xxxx.cloud.databricks.com" />
+        </div>
+
+        <div class="form-group">
+            <label class="ms-Label">Databricks SQL Warehouse ID</label>
+            <input type="text" id="warehouse-id" class="ms-TextField-field" placeholder="Enter your Databricks warehouse id" />
+        </div>
+
+        <div class="form-group">
+            <label class="ms-Label">Personal Access Token</label>
+            <input type="password" id="access-token" class="ms-TextField-field" placeholder="Enter your Databricks token" />
+        </div>
+
+        <div class="form-group">
+            <label class="ms-Label">SQL Query</label>
+            <textarea id="sql-query" class="ms-TextField-field" rows="6" placeholder="SELECT * FROM your_catalog.your_schema.your_table LIMIT 1000"></textarea>
+        </div>
+
+        <div class="form-group">
+            <button id="run-query" class="ms-Button ms-Button--primary">
+                <span class="ms-Button-label">Run Query</span>
+            </button>
+        </div>
+
+        <div id="status" class="status-message"></div>
+
+        <div class="form-group">
+            <div id="query-results"></div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

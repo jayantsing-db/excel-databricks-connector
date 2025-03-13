@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+}
+
+header {
+    padding: 10px 15px;
+    text-align: center;
+}
+
+#main-content {
+    padding: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.ms-TextField-field {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #c8c8c8;
+    height: auto;
+}
+
+textarea.ms-TextField-field {
+    min-height: 100px;
+}
+
+.status-message {
+    margin-top: 10px;
+    padding: 10px;
+    display: none;
+}
+
+.status-success {
+    background-color: #dff6dd;
+    color: #107c10;
+    display: block;
+}
+
+.status-error {
+    background-color: #fde7e9;
+    color: #a80000;
+    display: block;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.results-table th, .results-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.results-table th {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+}
+
+.results-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.row-count {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#query-results {
+    max-height: 300px;
+    overflow: auto;
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+table, th, td {
+    border: 1px solid #c8c8c8;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f8f8f8;
+}

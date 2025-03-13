@@ -1,0 +1,20 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx http-server --cors --ssl --cert /Users/jayant/.office-addin-dev-certs/localhost.crt --key /Users/jayant/.office-addin-dev-certs/localhost.key -p 8000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "office-js": "^0.1.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "office-addin-dev-certs": "^2.0.3"
+  }
+}
