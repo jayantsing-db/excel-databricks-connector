@@ -130,6 +130,118 @@
         });
     }
 
+    async function processSqlQueryWithCellReferences(sqlQuery) {
+        return Excel.run(async (context) => {
+            // Regular expression to find cell references like ${A1} or ${Sheet1!B2}
+            const cellRefRegex = /\${([^}]+)}/g;
+            let match;
+            let processedQuery = sqlQuery;
+
+            // Find all cell references in the query
+            const cellRefs = [];
+            while ((match = cellRefRegex.exec(sqlQuery)) !== null) {
+                cellRefs.push(match[1]);
+            }
+
+            // Process each cell reference
+            for (const cellRef of cellRefs) {
+                let range;
+
+                // Log the cell reference being processed
+                console.log("Processing cell reference:", cellRef);
+
+                try {
+                    // Check if it contains a sheet name (like "Sheet1!A1")
+                    if (cellRef.includes('!')) {
+                        const [sheetName, address] = cellRef.split('!');
+                        console.log(`Using sheet: "${sheetName}", address: "${address}"`);
+
+                        // Get the worksheet by name and then the range
+                        const worksheet = context.workbook.worksheets.getItem(sheetName);
+                        range = worksheet.getRange(address);
+                    } else {
+                        // No sheet specified, use active worksheet
+                        console.log(`Using active worksheet, address: "${cellRef}"`);
+                        range = context.workbook.worksheets.getActiveWorksheet().getRange(cellRef);
+                    }
+
+                    // Load cell values and number format
+                    range.load(["values", "numberFormat"]);
+
+                    // Execute the sync operation with better error handling
+                    try {
+                        await context.sync();
+                        console.log("Cell values:", range.values);
+                    } catch (syncError) {
+                        console.error("Sync error:", syncError);
+                        throw new Error(`Error accessing cell ${cellRef}: ${syncError.message}`);
+                    }
+
+                    // Convert cell values to SQL format based on data type and range size
+                    const formattedValue = formatRangeValueForSql(range.values, range.numberFormat);
+                    console.log(`Formatted value for ${cellRef}:`, formattedValue);
+
+                    // Replace the reference in the query
+                    processedQuery = processedQuery.replace(`\${${cellRef}}`, formattedValue);
+                } catch (e) {
+                    console.error("Error processing cell reference:", e);
+                    throw new Error(`Invalid cell reference: ${cellRef} - ${e.message}`);
+                }
+            }
+
+            console.log("Final processed query:", processedQuery);
+            return processedQuery;
+        });
+    }
+
+    function formatRangeValueForSql(values, numberFormat) {
+        // Single cell
+        if (values.length === 1 && values[0].length === 1) {
+            return formatCellValueForSql(values[0][0], numberFormat[0][0]);
+        }
+
+        // Range of cells - create an array
+        const formattedValues = [];
+        for (let i = 0; i < values.length; i++) {
+            for (let j = 0; j < values[i].length; j++) {
+                formattedValues.push(formatCellValueForSql(values[i][j], numberFormat[i][j]));
+            }
+        }
+
+        return "(" + formattedValues.join(", ") + ")";
+    }
+
+    function formatCellValueForSql(value, format) {
+        if (value === null || value === undefined) {
+            return "NULL";
+        }
+
+        // Check if it's a date
+        if (typeof format === "string" &&
+            (format.includes("d") || format.includes("m") || format.includes("y"))) {
+            // Format as SQL date string
+            return `'${new Date(value).toISOString().split('T')[0]}'`;
+        }
+
+        // Number
+        if (typeof value === "number") {
+            return value.toString();
+        }
+
+        // For values that look like numbers but are strings, convert them
+        if (typeof value === "string" && !isNaN(value) && value.trim() !== '') {
+            return value;
+        }
+
+        // Boolean
+        if (typeof value === "boolean") {
+            return value ? "TRUE" : "FALSE";
+        }
+
+        // Default to string with proper escaping
+        return `'${value.toString().replace(/'/g, "''")}'`;
+    }
+
     function addMessageToConversation(content, type) {
         const conversationHistory = document.getElementById('conversation-history');
 
@@ -163,6 +275,7 @@
             document.getElementById('run-query').onclick = runSqlQuery;
             document.getElementById('ask-genie').onclick = askGenieQuestion;
             document.getElementById('send-follow-up').onclick = sendFollowUpQuestion;
+            document.getElementById('insert-cell-reference').onclick = insertCellReference;
 
             // Set default host if saved in localStorage
             const savedHost = localStorage.getItem('databricksHost');
@@ -194,13 +307,17 @@
                 return;
             }
 
-            // Save host to localStorage for convenience
+            // Save host to localStorage
             localStorage.setItem('databricksHost', databricksHost);
+
+            // Process any cell references in the SQL query
+            showStatus('Processing Excel cell references...', true, 'info');
+            const processedSqlQuery = await processSqlQueryWithCellReferences(sqlQuery);
 
             showStatus('Running SQL query...', true, 'info');
 
-            // Call the API function
-            const response = await queryDatabricks(warehouseId, accessToken, sqlQuery);
+            // Call the API function with the processed query
+            const response = await queryDatabricks(warehouseId, accessToken, processedSqlQuery);
 
             if (response.error) {
                 showStatus(`Error: ${response.error}`, false);
@@ -384,6 +501,60 @@
         } catch (error) {
             showStatus(`Error: ${error.message}`, false);
             console.error('Error:', error);
+        }
+    }
+
+    async function insertCellReference() {
+        try {
+            showStatus('Click a cell in Excel to insert its reference', true, 'info');
+
+            // Get the SQL query textarea
+            const textarea = document.getElementById('sql-query');
+            const cursorPos = textarea.selectionStart;
+
+            // Use Excel API to get the selected cell
+            await Excel.run(async (context) => {
+                // Get the active worksheet first to get its exact name
+                const activeWorksheet = context.workbook.worksheets.getActiveWorksheet();
+                activeWorksheet.load("name");
+                await context.sync();
+
+                const exactSheetName = activeWorksheet.name;
+                console.log("Active worksheet name:", exactSheetName);
+
+                // This prompts the user to select a cell in Excel
+                context.workbook.getActiveCell().select();
+
+                // Get the selected range
+                const selectedRange = context.workbook.getSelectedRange();
+                selectedRange.load("address");
+                await context.sync();
+
+                // Extract just the address part (without sheet name)
+                let cellAddress = selectedRange.address;
+                if (cellAddress.includes('!')) {
+                    cellAddress = cellAddress.split('!')[1];
+                }
+
+                // Create the reference with exact sheet name
+                const reference = `\${${exactSheetName}!${cellAddress}}`;
+                console.log("Inserting reference:", reference);
+
+                textarea.value =
+                    textarea.value.substring(0, cursorPos) +
+                    reference +
+                    textarea.value.substring(cursorPos);
+
+                // Update cursor position after the insertion
+                textarea.selectionStart = cursorPos + reference.length;
+                textarea.selectionEnd = cursorPos + reference.length;
+                textarea.focus();
+
+                showStatus('Cell reference inserted', true);
+            });
+        } catch (error) {
+            showStatus(`Error inserting cell reference: ${error.message}`, false);
+            console.error('Error inserting cell reference:', error);
         }
     }
 

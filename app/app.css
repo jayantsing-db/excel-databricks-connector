@@ -263,3 +263,38 @@ textarea.ms-TextField-field {
     padding: 2px 4px;
     border-radius: 3px;
 }
+
+.query-editor-container {
+    position: relative;
+    display: flex;
+}
+
+.query-editor-container textarea {
+    flex-grow: 1;
+}
+
+.query-editor-container button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.query-editor-container button:hover {
+    background-color: #e0e0e0;
+}
+
+.ms-Icon--CellPhone {
+    /* This is a placeholder - you may need to use an appropriate Fluent UI icon */
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4 1h8v14H4V1zm1 1v10h6V2H5zm3 11a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+}

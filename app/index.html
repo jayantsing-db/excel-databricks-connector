@@ -106,7 +106,13 @@
 
             <div class="form-group">
                 <label class="ms-Label">SQL Query</label>
-                <textarea id="sql-query" class="ms-TextField-field" rows="6" placeholder="SELECT * FROM your_catalog.your_schema.your_table LIMIT 1000"></textarea>
+                <div class="query-editor-container">
+                    <textarea id="sql-query" class="ms-TextField-field" rows="6" placeholder="SELECT * FROM your_catalog.your_schema.your_table LIMIT 1000"></textarea>
+                    <button id="insert-cell-reference" class="ms-Button ms-Button--icon" title="Insert Excel Cell Reference">
+                        <i class="ms-Icon ms-Icon--CellPhone"></i>
+                    </button>
+                </div>
+                <p class="field-help">Use ${A1} syntax to reference Excel cells in your query</p>
             </div>
 
             <div class="form-group">

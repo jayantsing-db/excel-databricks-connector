@@ -7,11 +7,11 @@
         xsi:type="TaskPaneApp">
 
     <!-- Basic Add-in Information -->
-    <Id>34ceb81b-8ec4-4f0e-880f-3230a23c6c6d</Id>
-    <Version>1.0.0.1</Version>
-    <ProviderName>Your Company Name</ProviderName>
+    <Id>fc2d9e4c-2683-4ab1-9a2e-e9349317e8a9</Id>
+    <Version>1.0.0.2</Version>
+    <ProviderName>Databricks</ProviderName>
     <DefaultLocale>en-US</DefaultLocale>
-    <DisplayName DefaultValue="Databricks Connector" />
+    <DisplayName DefaultValue="Databricks Connector Add-in" />
     <Description DefaultValue="Connect to Databricks SQL Warehouse and import data to Excel" />
     <IconUrl DefaultValue="https://localhost:8000/assets/icon-32.png" />
     <HighResolutionIconUrl DefaultValue="https://localhost:8000/assets/icon-80.png" />
