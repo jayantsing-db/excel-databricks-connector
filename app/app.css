@@ -12,17 +12,45 @@ body {
 
 /* Header with Databricks red */
 header {
-    padding: 15px;
-    text-align: center;
-    background-color: #FF3621; /* Databricks red */
+    padding: 12px 15px;
+    background-color: #FF3621; /* Databricks red - ensure this overrides any MS Fabric class */
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Override any Fabric UI class that might set the background */
+header.ms-bgColor-themePrimary {
+    background-color: #FF3621 !important; /* Force Databricks red */
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.logo-container {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.databricks-logo {
+    display: block;
+    width: 32px;
+    height: 32px;
 }
 
 header h1 {
     margin: 0;
     font-size: 1.5em;
-    font-weight: 500; /* Slightly lighter weight for modern look */
+    font-weight: 400; /* Lighter weight for modern look */
+    letter-spacing: 0.2px; /* Slight letter spacing for better readability */
+    position: relative;
+    top: -2px; /* Shift text up slightly to align with logo */
+    left: -5px; /* Shift text left to move closer to logo */
 }
 
 .tab-container {

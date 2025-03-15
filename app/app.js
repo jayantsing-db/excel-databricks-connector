@@ -335,7 +335,7 @@
                 document.getElementById('databricks-host').value = savedHost;
             }
 
-            document.getElementById('status').textContent = "Databricks Excel Connector is ready!";
+            document.getElementById('status').textContent = "BrickSheet is ready, let the data games begin!";
             document.getElementById('status').className = "status-message status-success";
         } else {
             console.log("Not running in Excel", info);

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Databricks Excel Connector</title>
+    <title>BrickSheet</title>
 
     <!-- Office JavaScript API -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
@@ -21,7 +21,7 @@
             console.log("Office.onReady called", info);
             if (info.host === Office.HostType.Excel) {
                 console.log("Excel detected!");
-                document.getElementById('status').textContent = "Databricks Excel Connector is ready!";
+                document.getElementById('status').textContent = "BrickSheet is ready, let the data games begin!";
                 document.getElementById('status').className = "status-message status-success";
 
                 // Show the saved Databricks host if available
@@ -91,7 +91,12 @@
 <body class="ms-font-m ms-Fabric">
 <div id="container">
     <header class="ms-bgColor-themePrimary ms-fontColor-white">
-        <h1>Databricks Excel Connector</h1>
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="./assets/icon-225.png" alt="Databricks Logo" class="databricks-logo" />
+            </div>
+            <h1>BrickSheet</h1>
+        </div>
     </header>
 
     <div class="tab-container">
