@@ -2,6 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9; /* Light gray background */
 }
 
 #container {
@@ -9,16 +10,19 @@ body {
     height: 100%;
 }
 
+/* Header with Databricks red */
 header {
     padding: 15px;
     text-align: center;
-    background-color: #0078d4;
+    background-color: #FF3621; /* Databricks red */
     color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
     margin: 0;
     font-size: 1.5em;
+    font-weight: 500; /* Slightly lighter weight for modern look */
 }
 
 .tab-container {
@@ -35,21 +39,26 @@ header h1 {
     flex-grow: 1;
     font-size: 14px;
     transition: background-color 0.3s;
+    color: #555; /* Darker text for better contrast */
 }
 
 .tab-button:hover {
     background-color: #e0e0e0;
 }
 
+/* Active tab styling with Databricks accent */
 .tab-button.active {
     background-color: #fff;
-    border-bottom: 2px solid #0078d4;
+    border-bottom: 2px solid #FF3621; /* Databricks red */
     font-weight: bold;
+    color: #FF3621; /* Databricks red */
 }
 
 #main-content {
     padding: 15px;
     background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 0 0 4px 4px;
 }
 
 .form-group {
@@ -60,21 +69,24 @@ header h1 {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
+    color: #333; /* Darker text for better readability */
 }
 
 .ms-TextField-field {
     width: 100%;
     padding: 8px 10px;
     border: 1px solid #c8c8c8;
-    border-radius: 2px;
+    border-radius: 4px; /* Rounded corners */
     font-family: inherit;
     font-size: 14px;
     box-sizing: border-box;
+    transition: border-color 0.2s;
 }
 
 .ms-TextField-field:focus {
-    border-color: #0078d4;
+    border-color: #FF3621; /* Databricks red */
     outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 54, 33, 0.1); /* Subtle glow effect */
 }
 
 textarea.ms-TextField-field {
@@ -87,31 +99,33 @@ textarea.ms-TextField-field {
     height: 32px;
     background-color: #f4f4f4;
     border: 1px solid #8a8886;
-    border-radius: 2px;
+    border-radius: 4px; /* Rounded corners */
     cursor: pointer;
     font-family: inherit;
     font-size: 14px;
-    transition: all 0.1s;
+    transition: all 0.2s;
 }
 
 .ms-Button:hover {
     background-color: #eaeaea;
 }
 
+/* Primary button with Databricks red */
 .ms-Button--primary {
-    background-color: #0078d4;
-    border-color: #0078d4;
+    background-color: #FF3621; /* Databricks red */
+    border-color: #FF3621; /* Databricks red */
     color: white;
 }
 
 .ms-Button--primary:hover {
-    background-color: #106ebe;
+    background-color: #E62E1A; /* Slightly darker on hover */
+    border-color: #E62E1A;
 }
 
 .status-message {
     margin-top: 10px;
     padding: 10px;
-    border-radius: 2px;
+    border-radius: 4px; /* Rounded corners */
     display: none;
 }
 
@@ -119,24 +133,30 @@ textarea.ms-TextField-field {
     background-color: #dff6dd;
     color: #107c10;
     display: block;
+    border-left: 4px solid #107c10; /* Added accent border */
 }
 
 .status-error {
     background-color: #fde7e9;
     color: #a80000;
     display: block;
+    border-left: 4px solid #a80000; /* Added accent border */
 }
 
 .status-info {
     background-color: #f0f6ff;
     color: #0078d4;
     display: block;
+    border-left: 4px solid #0078d4; /* Added accent border */
 }
 
 .results-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 4px;
+    overflow: hidden; /* For the rounded corners to work with table */
 }
 
 .results-table th, .results-table td {
@@ -146,9 +166,11 @@ textarea.ms-TextField-field {
 }
 
 .results-table th {
-    background-color: #f2f2f2;
+    background-color: #f5f5f5;
     position: sticky;
     top: 0;
+    font-weight: 600;
+    color: #333;
 }
 
 .results-table tr:nth-child(even) {
@@ -158,12 +180,15 @@ textarea.ms-TextField-field {
 .row-count {
     margin-top: 10px;
     font-weight: bold;
+    color: #555;
 }
 
 #query-results {
     max-height: 300px;
     overflow: auto;
     margin-top: 15px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
 }
 
 #conversation-history {
@@ -183,16 +208,19 @@ textarea.ms-TextField-field {
     max-width: 85%;
 }
 
+/* Message styling with Databricks colors */
 .user-message {
-    background-color: #e1f0ff;
+    background-color: #FFECE9; /* Light red background */
+    border: 1px solid #FFDED9;
     margin-left: auto;
     text-align: right;
     align-self: flex-end;
+    color: #333;
 }
 
 .genie-message {
     background-color: #f0f0f0;
-    border-left: 3px solid #0078d4;
+    border-left: 3px solid #FF3621; /* Databricks red */
 }
 
 .message-content {
@@ -219,13 +247,14 @@ textarea.ms-TextField-field {
     min-height: 60px;
 }
 
+/* Loading animation with Databricks red */
 .loading {
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 3px solid rgba(0, 120, 212, 0.3);
+    border: 3px solid rgba(255, 54, 33, 0.3); /* Databricks red with transparency */
     border-radius: 50%;
-    border-top-color: #0078d4;
+    border-top-color: #FF3621; /* Databricks red */
     animation: spin 1s ease-in-out infinite;
     margin-right: 10px;
     vertical-align: middle;
@@ -240,8 +269,8 @@ textarea.ms-TextField-field {
 }
 
 .query-info {
-    background-color: #f0f7ff;
-    border: 1px solid #cce5ff;
+    background-color: #FFECE9; /* Light red background */
+    border: 1px solid #FFDED9;
     border-radius: 4px;
     padding: 8px 12px;
     margin: 8px 0;
@@ -299,26 +328,29 @@ textarea.ms-TextField-field {
     background-position: center;
 }
 
-/* Pagination controls */
+/* Pagination controls with styling */
 .pagination {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 10px;
-    padding: 5px;
+    padding: 8px;
     background-color: #f5f5f5;
     border-radius: 4px;
+    border: 1px solid #e0e0e0;
 }
 
 #page-info {
     margin: 0 10px;
+    color: #555;
+    font-size: 13px;
 }
 
 /* Make table headers sticky while scrolling */
 .results-table th {
     position: sticky;
     top: 0;
-    background-color: #f2f2f2;
+    background-color: #f5f5f5;
     z-index: 1;
 }
 
@@ -329,22 +361,24 @@ textarea.ms-TextField-field {
 
 /* Add hover effect on table rows */
 .results-table tr:hover {
-    background-color: #f0f7ff;
+    background-color: #FFECE9; /* Light Databricks red for hover */
 }
 
 #prev-page, #next-page {
     padding: 0 8px;
     height: 28px; /* Reduced height to match dropdown */
-    min-width: 80px; /* Set a consistent width */
+    min-width: 60px; /* Set a consistent width */
     font-size: 13px; /* Slightly smaller font */
+    border-color: #ccc;
 }
 
 /* Style for the dropdown */
 .ms-Dropdown {
     padding: 4px 8px;
     height: 28px; /* Match button height */
+    max-width: 90px; /* Control the width */
     border: 1px solid #c8c8c8;
-    border-radius: 2px;
+    border-radius: 4px;
     background-color: #fff;
 }
 
