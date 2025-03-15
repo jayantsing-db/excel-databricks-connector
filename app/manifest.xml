@@ -7,8 +7,8 @@
         xsi:type="TaskPaneApp">
 
     <!-- Basic Add-in Information -->
-    <Id>fc2d9e4c-2683-4ab1-9a2e-e9349317e8a9</Id>
-    <Version>1.0.0.2</Version>
+    <Id>f6a936f3-f23a-4c72-a317-70ce9699a738</Id>
+    <Version>1.0.0.3</Version>
     <ProviderName>Databricks</ProviderName>
     <DefaultLocale>en-US</DefaultLocale>
     <DisplayName DefaultValue="Databricks Connector Add-in" />
@@ -60,6 +60,7 @@
                                     <Action xsi:type="ShowTaskpane">
                                         <TaskpaneId>ButtonId1</TaskpaneId>
                                         <SourceLocation resid="Taskpane.Url" />
+                                        <Title resid="TaskpaneButton.Label"/>
                                     </Action>
                                 </Control>
                             </Group>

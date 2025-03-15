@@ -332,9 +332,17 @@ textarea.ms-TextField-field {
     background-color: #f0f7ff;
 }
 
+#prev-page, #next-page {
+    padding: 0 8px;
+    height: 28px; /* Reduced height to match dropdown */
+    min-width: 80px; /* Set a consistent width */
+    font-size: 13px; /* Slightly smaller font */
+}
+
 /* Style for the dropdown */
 .ms-Dropdown {
     padding: 4px 8px;
+    height: 28px; /* Match button height */
     border: 1px solid #c8c8c8;
     border-radius: 2px;
     background-color: #fff;
