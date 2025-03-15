@@ -4,26 +4,41 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Databricks SQL Connector</title>
+    <title>Databricks Excel Connector</title>
 
     <!-- Office JavaScript API -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
 
-    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui -->
+    <!-- Fluent UI -->
     <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"/>
 
     <!-- Template styles -->
     <link href="app.css" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript">
-        // Added error logging
+        // Error logging
         Office.onReady((info) => {
             console.log("Office.onReady called", info);
             if (info.host === Office.HostType.Excel) {
                 console.log("Excel detected!");
-                // Initialize your app
-                document.getElementById('status').textContent = "Databricks Add-in is in—let the data games begin!";
+                document.getElementById('status').textContent = "Databricks Excel Connector is ready!";
                 document.getElementById('status').className = "status-message status-success";
+
+                // Show the saved Databricks host if available
+                const savedHost = localStorage.getItem('databricksHost');
+                if (savedHost) {
+                    document.getElementById('databricks-host').value = savedHost;
+                }
+
+                // Show the saved Genie space ID if available
+                const savedGenieSpaceId = localStorage.getItem('genieSpaceId');
+                if (savedGenieSpaceId) {
+                    document.getElementById('genie-space-id').value = savedGenieSpaceId;
+                }
+
+                // Set the initial mode based on what was last used
+                const previousMode = localStorage.getItem('queryMode') || 'sql';
+                setQueryMode(previousMode);
             } else {
                 console.log("Not running in Excel", info);
                 document.getElementById('status').textContent = "Not running in Excel. Host: " + (info.host || "unknown");
@@ -37,6 +52,24 @@
             document.getElementById('status').className = "status-message status-error";
             return false;
         };
+
+        function setQueryMode(mode) {
+            // Save the mode preference
+            localStorage.setItem('queryMode', mode);
+
+            // Show/hide relevant sections
+            if (mode === 'genie') {
+                document.getElementById('sql-mode').style.display = 'none';
+                document.getElementById('genie-mode').style.display = 'block';
+                document.getElementById('genie-tab').className = 'tab-button active';
+                document.getElementById('sql-tab').className = 'tab-button';
+            } else {
+                document.getElementById('sql-mode').style.display = 'block';
+                document.getElementById('genie-mode').style.display = 'none';
+                document.getElementById('sql-tab').className = 'tab-button active';
+                document.getElementById('genie-tab').className = 'tab-button';
+            }
+        }
     </script>
 
     <script type="text/javascript" src="app.js"></script>
@@ -45,8 +78,14 @@
 <body class="ms-font-m ms-Fabric">
 <div id="container">
     <header class="ms-bgColor-themePrimary ms-fontColor-white">
-        <h1>Databricks SQL Connector</h1>
+        <h1>Databricks Excel Connector</h1>
     </header>
+
+    <div class="tab-container">
+        <button id="sql-tab" class="tab-button active" onclick="setQueryMode('sql')">SQL Mode</button>
+        <button id="genie-tab" class="tab-button" onclick="setQueryMode('genie')">AI/BI Genie</button>
+    </div>
+
     <section id="main-content" class="ms-fontColor-neutralPrimary">
         <div class="form-group">
             <label class="ms-Label">Databricks Host</label>
@@ -54,24 +93,58 @@
         </div>
 
         <div class="form-group">
-            <label class="ms-Label">Databricks SQL Warehouse ID</label>
-            <input type="text" id="warehouse-id" class="ms-TextField-field" placeholder="Enter your Databricks warehouse id" />
-        </div>
-
-        <div class="form-group">
             <label class="ms-Label">Personal Access Token</label>
             <input type="password" id="access-token" class="ms-TextField-field" placeholder="Enter your Databricks token" />
         </div>
 
-        <div class="form-group">
-            <label class="ms-Label">SQL Query</label>
-            <textarea id="sql-query" class="ms-TextField-field" rows="6" placeholder="SELECT * FROM your_catalog.your_schema.your_table LIMIT 1000"></textarea>
+        <!-- SQL Mode -->
+        <div id="sql-mode">
+            <div class="form-group">
+                <label class="ms-Label">SQL Warehouse ID</label>
+                <input type="text" id="warehouse-id" class="ms-TextField-field" placeholder="Enter your Databricks warehouse id" />
+            </div>
+
+            <div class="form-group">
+                <label class="ms-Label">SQL Query</label>
+                <textarea id="sql-query" class="ms-TextField-field" rows="6" placeholder="SELECT * FROM your_catalog.your_schema.your_table LIMIT 1000"></textarea>
+            </div>
+
+            <div class="form-group">
+                <button id="run-query" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Run SQL Query</span>
+                </button>
+            </div>
         </div>
 
-        <div class="form-group">
-            <button id="run-query" class="ms-Button ms-Button--primary">
-                <span class="ms-Button-label">Run Query</span>
-            </button>
+        <!-- Genie Mode -->
+        <div id="genie-mode" style="display: none;">
+            <div class="form-group">
+                <label class="ms-Label">Genie Space ID</label>
+                <input type="text" id="genie-space-id" class="ms-TextField-field" placeholder="Enter your Genie Space ID" />
+                <p class="field-help">Find this in your Genie Space URL: https://example.databricks.com/genie/rooms/SPACE_ID</p>
+            </div>
+
+            <div class="form-group">
+                <label class="ms-Label">Ask a question about your data</label>
+                <textarea id="genie-question" class="ms-TextField-field" rows="3" placeholder="Example: Which customers made the most purchases last month?"></textarea>
+            </div>
+
+            <div class="form-group">
+                <button id="ask-genie" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Ask Genie</span>
+                </button>
+            </div>
+
+            <div id="conversation-history">
+                <!-- Conversation messages will appear here -->
+            </div>
+
+            <div class="form-group hidden" id="follow-up-container">
+                <textarea id="follow-up-question" class="ms-TextField-field" rows="2" placeholder="Ask a follow-up question..."></textarea>
+                <button id="send-follow-up" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Send</span>
+                </button>
+            </div>
         </div>
 
         <div id="status" class="status-message"></div>
