@@ -57,6 +57,19 @@
             // Save the mode preference
             localStorage.setItem('queryMode', mode);
 
+            // Clear any query results
+            document.getElementById('query-results').innerHTML = '';
+
+            // Reset pagination display
+            document.getElementById('page-info').textContent = 'Page 1 of 1';
+            document.getElementById('prev-page').disabled = true;
+            document.getElementById('next-page').disabled = true;
+
+            // Clear any status messages
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = '';
+            statusDiv.className = 'status-message';
+
             // Show/hide relevant sections
             if (mode === 'genie') {
                 document.getElementById('sql-mode').style.display = 'none';
@@ -157,6 +170,21 @@
 
         <div class="form-group">
             <div id="query-results"></div>
+            <div id="pagination-controls" class="pagination">
+                <button id="prev-page" class="ms-Button">
+                    <span class="ms-Button-label">Previous</span>
+                </button>
+                <span id="page-info">Page 1 of 1</span>
+                <button id="next-page" class="ms-Button">
+                    <span class="ms-Button-label">Next</span>
+                </button>
+                <select id="rows-per-page" class="ms-Dropdown">
+                    <option value="10">10 rows</option>
+                    <option value="25">25 rows</option>
+                    <option value="50">50 rows</option>
+                    <option value="100">100 rows</option>
+                </select>
+            </div>
         </div>
     </section>
 </div>

@@ -36,52 +36,101 @@
             return;
         }
 
-        // Create table
-        const table = document.createElement('table');
-        table.className = 'results-table';
+        // Store data globally for pagination
+        window.queryResultData = data;
+        window.currentPage = 1;
 
-        // Create header row
-        const headerRow = document.createElement('tr');
-        const headers = Object.keys(data[0]);
+        // Create a function to render a page that can be reused
+        window.renderResultPage = function(page) {
+            const rowsPerPage = parseInt(document.getElementById('rows-per-page').value) || 25;
+            const totalPages = Math.ceil(window.queryResultData.length / rowsPerPage);
 
-        headers.forEach(header => {
-            const th = document.createElement('th');
-            th.textContent = header;
-            headerRow.appendChild(th);
-        });
+            // Validate page number
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
 
-        table.appendChild(headerRow);
+            window.currentPage = page;
 
-        // Create data rows
-        data.forEach(row => {
-            const tr = document.createElement('tr');
+            // Clear the results area
+            resultsDiv.innerHTML = '';
+
+            // Create table
+            const table = document.createElement('table');
+            table.className = 'results-table';
+
+            // Create header row
+            const headerRow = document.createElement('tr');
+            const headers = Object.keys(window.queryResultData[0]);
 
             headers.forEach(header => {
-                const td = document.createElement('td');
-
-                // Handle different data types for display
-                const value = row[header];
-                if (value === null || value === undefined) {
-                    td.textContent = '';
-                } else if (typeof value === 'object' && value instanceof Date) {
-                    td.textContent = value.toLocaleDateString();
-                } else {
-                    td.textContent = value.toString();
-                }
-
-                tr.appendChild(td);
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
             });
 
-            table.appendChild(tr);
-        });
+            table.appendChild(headerRow);
 
-        resultsDiv.appendChild(table);
+            // Calculate slice of data to show
+            const startIndex = (page - 1) * rowsPerPage;
+            const endIndex = Math.min(startIndex + rowsPerPage, window.queryResultData.length);
+            const pageData = window.queryResultData.slice(startIndex, endIndex);
 
-        // Add row count
-        const rowCount = document.createElement('p');
-        rowCount.className = 'row-count';
-        rowCount.textContent = `Rows: ${data.length}`;
-        resultsDiv.appendChild(rowCount);
+            // Create data rows for current page
+            pageData.forEach(row => {
+                const tr = document.createElement('tr');
+
+                headers.forEach(header => {
+                    const td = document.createElement('td');
+                    const value = row[header];
+
+                    if (value === null || value === undefined) {
+                        td.textContent = '';
+                    } else if (typeof value === 'object' && value instanceof Date) {
+                        td.textContent = value.toLocaleDateString();
+                    } else {
+                        td.textContent = value.toString();
+                    }
+
+                    tr.appendChild(td);
+                });
+
+                table.appendChild(tr);
+            });
+
+            resultsDiv.appendChild(table);
+
+            // Add row count
+            const rowCount = document.createElement('p');
+            rowCount.className = 'row-count';
+            rowCount.textContent = `Showing rows ${startIndex + 1}-${endIndex} of ${window.queryResultData.length}`;
+            resultsDiv.appendChild(rowCount);
+
+            // Update page info
+            document.getElementById('page-info').textContent = `Page ${page} of ${totalPages}`;
+
+            // Update button states
+            document.getElementById('prev-page').disabled = page === 1;
+            document.getElementById('next-page').disabled = page === totalPages;
+
+            console.log(`Rendered page ${page} of ${totalPages}, showing ${pageData.length} rows (${startIndex + 1}-${endIndex})`);
+        };
+
+        // Initial render
+        window.renderResultPage(1);
+
+        // Set up event handlers for pagination
+        document.getElementById('prev-page').onclick = function() {
+            window.renderResultPage(window.currentPage - 1);
+        };
+
+        document.getElementById('next-page').onclick = function() {
+            window.renderResultPage(window.currentPage + 1);
+        };
+
+        document.getElementById('rows-per-page').onchange = function() {
+            // Re-render first page with new rows per page
+            window.renderResultPage(1);
+        };
     }
 
     async function writeToExcel(data) {
@@ -276,6 +325,9 @@
             document.getElementById('ask-genie').onclick = askGenieQuestion;
             document.getElementById('send-follow-up').onclick = sendFollowUpQuestion;
             document.getElementById('insert-cell-reference').onclick = insertCellReference;
+            document.getElementById('prev-page').onclick = () => {}; // Will be overridden in displayQueryResults
+            document.getElementById('next-page').onclick = () => {}; // Will be overridden in displayQueryResults
+            document.getElementById('rows-per-page').onchange = () => {}; // Will be overridden in displayQueryResults
 
             // Set default host if saved in localStorage
             const savedHost = localStorage.getItem('databricksHost');
@@ -295,6 +347,9 @@
     // Traditional SQL query functionality
     async function runSqlQuery() {
         try {
+            // Clear previous query results
+            document.getElementById('query-results').innerHTML = '';
+
             // Get values from form
             const databricksHost = document.getElementById('databricks-host').value;
             const warehouseId = document.getElementById('warehouse-id').value;
