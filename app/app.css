@@ -55,66 +55,95 @@ header h1 {
 
 .tab-container {
     display: flex;
-    border-bottom: 1px solid #ddd;
+    border-bottom: none; /* Remove bottom border */
     background-color: #f5f5f5;
+    padding: 0 4px; /* Add padding to sides */
+    border-radius: 8px 8px 0 0; /* Round top corners */
+    overflow: hidden; /* Keep child elements within rounded corners */
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    margin: 0 4px; /* Match main content margin */
 }
 
 .tab-button {
-    padding: 10px 15px;
+    padding: 12px 20px; /* More padding for larger hit area */
     border: none;
     background-color: transparent;
     cursor: pointer;
     flex-grow: 1;
     font-size: 14px;
-    transition: background-color 0.3s;
-    color: #555; /* Darker text for better contrast */
+    transition: all 0.2s ease;
+    color: #555;
+    position: relative; /* For the after pseudo-element */
+    font-weight: 500; /* Medium weight by default */
 }
 
 .tab-button:hover {
-    background-color: #e0e0e0;
+    background-color: rgba(0, 0, 0, 0.03); /* Subtle hover effect */
+    color: #333; /* Darker text on hover */
 }
 
 /* Active tab styling with Databricks accent */
 .tab-button.active {
     background-color: #fff;
-    border-bottom: 2px solid #FF3621; /* Databricks red */
-    font-weight: bold;
     color: #FF3621; /* Databricks red */
+    font-weight: 600; /* Slightly bolder */
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for active tab */
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #FF3621; /* Databricks red */
+    transition: all 0.2s ease;
 }
 
 #main-content {
-    padding: 15px;
+    padding: 20px; /* More padding */
     background-color: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Enhanced shadow */
+    border-radius: 8px; /* More rounded corners */
+    margin: 0 4px 4px 4px; /* Add some margin around the edges */
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px; /* Increased spacing between form groups */
+    padding-bottom: 4px; /* Subtle padding at bottom */
 }
 
 .ms-Label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 6px; /* More space between label and field */
     font-weight: 600;
     color: #333; /* Darker text for better readability */
+    font-size: 14px;
 }
 
 .ms-TextField-field {
     width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #c8c8c8;
-    border-radius: 4px; /* Rounded corners */
+    padding: 10px 12px; /* Slightly increased padding */
+    border: 1px solid #d0d0d0; /* Lighter border color */
+    border-radius: 6px; /* More pronounced rounded corners */
     font-family: inherit;
     font-size: 14px;
     box-sizing: border-box;
-    transition: border-color 0.2s;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Subtle shadow for depth */
+    background-color: #ffffff;
+}
+
+.ms-TextField-field:hover {
+    border-color: #b0b0b0; /* Darker on hover */
 }
 
 .ms-TextField-field:focus {
     border-color: #FF3621; /* Databricks red */
     outline: none;
-    box-shadow: 0 0 0 2px rgba(255, 54, 33, 0.1); /* Subtle glow effect */
+    box-shadow: 0 0 0 3px rgba(255, 54, 33, 0.15); /* Larger glow effect */
+    transform: translateY(-1px); /* Subtle lift effect on focus */
 }
 
 textarea.ms-TextField-field {
@@ -124,18 +153,30 @@ textarea.ms-TextField-field {
 
 .ms-Button {
     padding: 0 16px;
-    height: 32px;
-    background-color: #f4f4f4;
-    border: 1px solid #8a8886;
-    border-radius: 4px; /* Rounded corners */
+    height: 36px;
+    background-color: #f8f8f8; /* Lighter background */
+    border: 1px solid #d0d0d0; /* Lighter border */
+    border-radius: 6px; /* More rounded */
     cursor: pointer;
     font-family: inherit;
     font-size: 14px;
-    transition: all 0.2s;
+    font-weight: 500; /* Medium weight for better readability */
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .ms-Button:hover {
-    background-color: #eaeaea;
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Enhanced shadow on hover */
+    transform: translateY(-1px); /* Subtle lift on hover */
+}
+
+.ms-Button:active {
+    transform: translateY(0); /* Press effect */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Reduced shadow when pressed */
 }
 
 /* Primary button with Databricks red */
@@ -143,18 +184,28 @@ textarea.ms-TextField-field {
     background-color: #FF3621; /* Databricks red */
     border-color: #FF3621; /* Databricks red */
     color: white;
+    box-shadow: 0 2px 4px rgba(255, 54, 33, 0.2); /* Red-tinted shadow */
 }
 
 .ms-Button--primary:hover {
     background-color: #E62E1A; /* Slightly darker on hover */
     border-color: #E62E1A;
+    box-shadow: 0 3px 6px rgba(255, 54, 33, 0.3); /* Enhanced shadow on hover */
+}
+
+.ms-Button--primary:active {
+    background-color: #D42A18; /* Even darker when active */
+    box-shadow: 0 1px 3px rgba(255, 54, 33, 0.2); /* Reduced shadow when pressed */
 }
 
 .status-message {
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 4px; /* Rounded corners */
+    margin-top: 15px;
+    margin-bottom: 10px;
+    padding: 12px 15px;
+    border-radius: 6px;
     display: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    font-weight: 500;
 }
 
 .status-success {
@@ -180,25 +231,26 @@ textarea.ms-TextField-field {
 
 .results-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    border-radius: 4px;
-    overflow: hidden; /* For the rounded corners to work with table */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
 }
 
-.results-table th, .results-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
+/* Make table headers sticky while scrolling */
 .results-table th {
     background-color: #f5f5f5;
     position: sticky;
     top: 0;
     font-weight: 600;
     color: #333;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Shadow for stickiness */
+    z-index: 1;
 }
 
 .results-table tr:nth-child(even) {
@@ -206,49 +258,60 @@ textarea.ms-TextField-field {
 }
 
 .row-count {
-    margin-top: 10px;
-    font-weight: bold;
+    margin: 12px 0 8px 16px; /* Top, right, bottom, left margins */
+    font-weight: 600;
     color: #555;
+    font-size: 13px;
+    display: inline-block;
+    background-color: #f5f5f5;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
 }
 
 #query-results {
     max-height: 300px;
     overflow: auto;
-    margin-top: 15px;
-    border-radius: 4px;
+    margin-top: 20px;
+    border-radius: 6px;
     border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
 }
 
 #conversation-history {
-    margin: 15px 0;
+    margin: 20px 0;
     max-height: 300px;
     overflow-y: auto;
     border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 10px;
+    border-radius: 8px;
+    padding: 15px;
     background-color: #f9f9f9;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07) inset;
 }
 
 .message {
-    margin-bottom: 12px;
-    padding: 8px 12px;
-    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 10px;
     max-width: 85%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* Message styling with Databricks colors */
 .user-message {
-    background-color: #FFECE9; /* Light red background */
+    background-color: #FFECE9;
     border: 1px solid #FFDED9;
     margin-left: auto;
     text-align: right;
     align-self: flex-end;
     color: #333;
+    position: relative;
 }
 
 .genie-message {
     background-color: #f0f0f0;
-    border-left: 3px solid #FF3621; /* Databricks red */
+    border-left: 3px solid #FF3621;
+    position: relative;
 }
 
 .message-content {
@@ -361,11 +424,12 @@ textarea.ms-TextField-field {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 10px;
-    padding: 8px;
-    background-color: #f5f5f5;
-    border-radius: 4px;
-    border: 1px solid #e0e0e0;
+    margin-top: 15px;
+    padding: 10px 12px;
+    background-color: #f8f8f8;
+    border-radius: 6px;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 #page-info {
@@ -374,17 +438,16 @@ textarea.ms-TextField-field {
     font-size: 13px;
 }
 
-/* Make table headers sticky while scrolling */
-.results-table th {
-    position: sticky;
-    top: 0;
-    background-color: #f5f5f5;
-    z-index: 1;
-}
-
 /* Improved spacing for better readability */
 .results-table td, .results-table th {
-    padding: 8px 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #eaeaea; /* Lighter borders */
+    border-right: none;
+    border-left: none;
+}
+
+.results-table tr:last-child td {
+    border-bottom: none; /* Remove border from last row */
 }
 
 /* Add hover effect on table rows */
@@ -404,7 +467,7 @@ textarea.ms-TextField-field {
 .ms-Dropdown {
     padding: 4px 8px;
     height: 28px; /* Match button height */
-    max-width: 90px; /* Control the width */
+    max-width: 85px; /* Control the width */
     border: 1px solid #c8c8c8;
     border-radius: 4px;
     background-color: #fff;
