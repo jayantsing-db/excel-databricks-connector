@@ -46,7 +46,7 @@ header.ms-bgColor-themePrimary {
 header h1 {
     margin: 0;
     font-size: 1.5em;
-    font-weight: 400; /* Lighter weight for modern look */
+    font-weight: 400; /* Light weight for modern look */
     letter-spacing: 0.2px; /* Slight letter spacing for better readability */
     position: relative;
     top: -2px; /* Shift text up slightly to align with logo */
