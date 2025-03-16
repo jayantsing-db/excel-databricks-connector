@@ -87,8 +87,10 @@
                         td.textContent = '';
                     } else if (typeof value === 'object' && value instanceof Date) {
                         td.textContent = value.toLocaleDateString();
+                        td.title = value.toLocaleDateString(); // Add tooltip for dates
                     } else {
                         td.textContent = value.toString();
+                        td.title = value.toString(); // Add tooltip for all other values
                     }
 
                     tr.appendChild(td);
