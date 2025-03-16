@@ -77,7 +77,7 @@ header h1 {
 }
 
 .tab-button {
-    padding: 12px 20px 12px 42px; /* Increased left padding for icon */
+    padding: 12px 20px 12px 42px; /* Left padding for icon */
     border: none;
     background-color: transparent;
     cursor: pointer;
@@ -180,21 +180,21 @@ header h1 {
 }
 
 #main-content {
-    padding: 20px; /* More padding */
+    padding: 20px;
     background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Enhanced shadow */
-    border-radius: 8px; /* More rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Shadow */
+    border-radius: 8px;
     margin: 0 4px 4px 4px; /* Add some margin around the edges */
 }
 
 .form-group {
-    margin-bottom: 20px; /* Increased spacing between form groups */
+    margin-bottom: 20px; /* Spacing between form groups */
     padding-bottom: 4px; /* Subtle padding at bottom */
 }
 
 .ms-Label {
     display: block;
-    margin-bottom: 6px; /* More space between label and field */
+    margin-bottom: 6px; /* Space between label and field */
     font-weight: 600;
     color: #333; /* Darker text for better readability */
     font-size: 14px;
@@ -204,7 +204,7 @@ header h1 {
     width: 100%;
     padding: 10px 40px 10px 12px;
     border: 1px solid #d0d0d0; /* Lighter border color */
-    border-radius: 6px; /* More pronounced rounded corners */
+    border-radius: 6px; /* Rounded corners */
     font-family: inherit;
     font-size: 14px;
     box-sizing: border-box;
@@ -234,7 +234,7 @@ textarea.ms-TextField-field {
     height: 36px;
     background-color: #f8f8f8; /* Lighter background */
     border: 1px solid #d0d0d0; /* Lighter border */
-    border-radius: 6px; /* More rounded */
+    border-radius: 6px; /* Rounded */
     cursor: pointer;
     font-family: inherit;
     font-size: 14px;
@@ -248,13 +248,13 @@ textarea.ms-TextField-field {
 
 .ms-Button:hover {
     background-color: #f0f0f0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Enhanced shadow on hover */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow on hover */
     transform: translateY(-1px); /* Subtle lift on hover */
 }
 
 .ms-Button:active {
     transform: translateY(0); /* Press effect */
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Reduced shadow when pressed */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Shadow when pressed */
 }
 
 /* Primary button with Databricks red */
@@ -268,12 +268,12 @@ textarea.ms-TextField-field {
 .ms-Button--primary:hover {
     background-color: #E62E1A; /* Slightly darker on hover */
     border-color: #E62E1A;
-    box-shadow: 0 3px 6px rgba(255, 54, 33, 0.3); /* Enhanced shadow on hover */
+    box-shadow: 0 3px 6px rgba(255, 54, 33, 0.3); /* Shadow on hover */
 }
 
 .ms-Button--primary:active {
-    background-color: #D42A18; /* Even darker when active */
-    box-shadow: 0 1px 3px rgba(255, 54, 33, 0.2); /* Reduced shadow when pressed */
+    background-color: #D42A18; /* Darker when active */
+    box-shadow: 0 1px 3px rgba(255, 54, 33, 0.2); /* Shadow when pressed */
 }
 
 .status-message {
@@ -290,21 +290,21 @@ textarea.ms-TextField-field {
     background-color: #dff6dd;
     color: #107c10;
     display: block;
-    border-left: 4px solid #107c10; /* Added accent border */
+    border-left: 4px solid #107c10; /* Accent border */
 }
 
 .status-error {
     background-color: #fde7e9;
     color: #a80000;
     display: block;
-    border-left: 4px solid #a80000; /* Added accent border */
+    border-left: 4px solid #a80000; /* Accent border */
 }
 
 .status-info {
     background-color: #f0f6ff;
     color: #0078d4;
     display: block;
-    border-left: 4px solid #0078d4; /* Added accent border */
+    border-left: 4px solid #0078d4; /* Accent border */
 }
 
 .results-table {
@@ -317,7 +317,7 @@ textarea.ms-TextField-field {
     overflow: hidden;
 }
 
-/* Make table headers sticky while scrolling */
+/* Table headers sticky while scrolling */
 .results-table th {
     background-color: #f5f5f5;
     position: sticky;
@@ -516,7 +516,7 @@ textarea.ms-TextField-field {
     font-size: 13px;
 }
 
-/* Improved spacing for better readability */
+/* Spacing for better readability */
 .results-table td, .results-table th {
     padding: 10px 14px;
     border-bottom: 1px solid #eaeaea; /* Lighter borders */
@@ -535,7 +535,7 @@ textarea.ms-TextField-field {
 
 #prev-page, #next-page {
     padding: 0 8px;
-    height: 28px; /* Reduced height to match dropdown */
+    height: 28px; /* Height to match dropdown */
     min-width: 60px; /* Set a consistent width */
     font-size: 13px; /* Slightly smaller font */
     border-color: #ccc;
