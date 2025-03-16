@@ -780,13 +780,15 @@ textarea.ms-TextField-field {
 
 .input-with-button {
     display: flex;
-    align-items: center;
+    align-items: stretch;
 }
 
 .input-with-button .ms-TextField-field {
     flex-grow: 1;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    height: 38px;
+    box-sizing: border-box;
 }
 
 .input-with-button .ms-Button {
@@ -795,6 +797,10 @@ textarea.ms-TextField-field {
     margin-left: -1px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Checkbox styling */
@@ -870,6 +876,7 @@ textarea.ms-TextField-field {
     display: inline-block;
     background-repeat: no-repeat;
     background-position: center;
+    margin: 0;
 }
 
 /* For a consistent look between SQL and Genie panels */
