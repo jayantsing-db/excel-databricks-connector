@@ -11,19 +11,43 @@
         statusDiv.textContent = message;
         statusDiv.className = 'status-message';
 
+        // Clear any existing classes
+        statusDiv.classList.remove('status-success', 'status-error', 'status-info', 'status-loading');
+
+        // Set the appropriate class based on message type
         if (isSuccess && type === 'info') {
             statusDiv.classList.add('status-info');
+        } else if (isSuccess && type === 'loading') {
+            statusDiv.classList.add('status-loading');
         } else if (isSuccess) {
             statusDiv.classList.add('status-success');
         } else {
             statusDiv.classList.add('status-error');
         }
 
+        // Make sure the message is visible
+        statusDiv.style.display = 'block';
+
+        // Add a subtle entrance animation by briefly adding and removing a class
+        statusDiv.classList.add('status-animate');
+        setTimeout(() => {
+            statusDiv.classList.remove('status-animate');
+        }, 300);
+
         // Log to console for debugging
         if (isSuccess) {
             console.log('Status:', message);
         } else {
             console.error('Status Error:', message);
+        }
+
+        // For loading states, return a function to update the message
+        if (type === 'loading') {
+            return (newMessage) => {
+                if (newMessage) {
+                    statusDiv.textContent = newMessage;
+                }
+            };
         }
     }
 
@@ -350,7 +374,8 @@
     async function runSqlQuery() {
         try {
             // Clear previous query results
-            document.getElementById('query-results').innerHTML = '';
+            const resultsDiv = document.getElementById('query-results');
+            resultsDiv.innerHTML = '';
 
             // Get values from form
             const databricksHost = document.getElementById('databricks-host').value;
@@ -368,10 +393,11 @@
             localStorage.setItem('databricksHost', databricksHost);
 
             // Process any cell references in the SQL query
-            showStatus('Processing Excel cell references...', true, 'info');
+            const updateStatus = showStatus('Processing Excel cell references...', true, 'loading');
             const processedSqlQuery = await processSqlQueryWithCellReferences(sqlQuery);
 
-            showStatus('Running SQL query...', true, 'info');
+            // Update the loading status message
+            updateStatus('Running SQL query...');
 
             // Call the API function with the processed query
             const response = await queryDatabricks(warehouseId, accessToken, processedSqlQuery);
@@ -380,6 +406,9 @@
                 showStatus(`Error: ${response.error}`, false);
                 return;
             }
+
+            // Update status during data processing
+            updateStatus('Preparing results display...');
 
             // Display results in the add-in
             displayQueryResults(response.data);

@@ -277,34 +277,115 @@ textarea.ms-TextField-field {
 }
 
 .status-message {
-    margin-top: 15px;
-    margin-bottom: 10px;
-    padding: 12px 15px;
-    border-radius: 6px;
+    margin: 15px 0;
+    padding: 14px 16px 14px 50px; /* Extra left padding for icon */
+    border-radius: 8px;
     display: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     font-weight: 500;
+    font-size: 14px;
+    position: relative;
+    border: 1px solid transparent;
+    animation: status-fade-in 0.3s ease-out;
+    transition: all 0.2s ease;
+}
+
+@keyframes status-fade-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .status-success {
-    background-color: #dff6dd;
-    color: #107c10;
+    background-color: #f0f9f0;
+    color: #108548;
     display: block;
-    border-left: 4px solid #107c10; /* Accent border */
+    border-color: #d1e7dd;
 }
 
 .status-error {
-    background-color: #fde7e9;
-    color: #a80000;
+    background-color: #fff1f2;
+    color: #d73a49;
     display: block;
-    border-left: 4px solid #a80000; /* Accent border */
+    border-color: #ffdbdd;
 }
 
 .status-info {
-    background-color: #f0f6ff;
-    color: #0078d4;
+    background-color: #FFECE9; /* Light Databricks red */
+    color: #FF3621; /* Databricks red */
     display: block;
-    border-left: 4px solid #0078d4; /* Accent border */
+    border-color: #FFDED9;
+}
+
+/* Icons for status messages */
+.status-message::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.status-success::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23108548"><path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"/></svg>');
+}
+
+.status-error::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d73a49"><path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M16.2 16.2L7.8 7.8C9 6.7 10.4 6 12 6 15.3 6 18 8.7 18 12 18 13.6 17.3 15 16.2 16.2M6 12C6 8.7 8.7 6 12 6 13.6 6 15 6.7 16.2 7.8L7.8 16.2C6.7 15 6 13.6 6 12Z"/></svg>');
+}
+
+.status-info::before {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FF3621"><path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M13 17H11V11H13V17M13 9H11V7H13V9Z"/></svg>');
+}
+
+/* Loading status with animation */
+.status-loading {
+    display: block;
+    background-color: #FFECE9; /* Light Databricks red */
+    color: #FF3621; /* Databricks red */
+    border-color: #FFDED9;
+    padding-left: 50px; /* Space for the spinner */
+}
+
+.status-loading::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 54, 33, 0.3); /* Databricks red with transparency */
+    border-radius: 50%;
+    border-top-color: #FF3621; /* Databricks red */
+    animation: status-spin 1s linear infinite;
+}
+
+@keyframes status-spin {
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Status message container */
+.status-container {
+    position: relative;
+    margin: 15px 0;
+}
+
+@media (max-width: 500px) {
+    .status-message {
+        padding: 12px 12px 12px 40px;
+        font-size: 13px;
+    }
+
+    .status-message::before {
+        left: 12px;
+        width: 16px;
+        height: 16px;
+    }
 }
 
 .results-table {
