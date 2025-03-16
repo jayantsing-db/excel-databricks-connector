@@ -458,8 +458,16 @@
         const formattedValues = [];
         for (let i = 0; i < values.length; i++) {
             for (let j = 0; j < values[i].length; j++) {
-                formattedValues.push(formatCellValueForSql(values[i][j], numberFormat[i][j]));
+                // Skip empty cells
+                if (values[i][j] !== "" && values[i][j] !== null && values[i][j] !== undefined) {
+                    formattedValues.push(formatCellValueForSql(values[i][j], numberFormat[i][j]));
+                }
             }
+        }
+
+        // If the range is empty after filtering, return NULL
+        if (formattedValues.length === 0) {
+            return "NULL";
         }
 
         return "(" + formattedValues.join(", ") + ")";
@@ -987,13 +995,13 @@
 
     async function insertCellReference() {
         try {
-            showStatus('Click a cell in Excel to insert its reference', true, 'info');
+            showStatus('Select a cell or range in Excel to insert its reference', true, 'info');
 
             // Get the SQL query textarea
             const textarea = document.getElementById('sql-query');
             const cursorPos = textarea.selectionStart;
 
-            // Use Excel API to get the selected cell
+            // Use Excel API to get the selected range
             await Excel.run(async (context) => {
                 // Get the active worksheet first to get its exact name
                 const activeWorksheet = context.workbook.worksheets.getActiveWorksheet();
@@ -1003,23 +1011,23 @@
                 const exactSheetName = activeWorksheet.name;
                 console.log("Active worksheet name:", exactSheetName);
 
-                // This prompts the user to select a cell in Excel
-                context.workbook.getActiveCell().select();
+                // This prompts the user to select a cell or range in Excel
+                context.workbook.getSelectedRange().select();
 
                 // Get the selected range
                 const selectedRange = context.workbook.getSelectedRange();
                 selectedRange.load("address");
                 await context.sync();
 
-                // Extract just the address part (without sheet name)
-                let cellAddress = selectedRange.address;
-                if (cellAddress.includes('!')) {
-                    cellAddress = cellAddress.split('!')[1];
+                // Extract the address part (without sheet name if it's included)
+                let rangeAddress = selectedRange.address;
+                if (rangeAddress.includes('!')) {
+                    rangeAddress = rangeAddress.split('!')[1];
                 }
 
                 // Create the reference with exact sheet name
-                const reference = `\${${exactSheetName}!${cellAddress}}`;
-                console.log("Inserting reference:", reference);
+                const reference = `\${${exactSheetName}!${rangeAddress}}`;
+                console.log("Inserting range reference:", reference);
 
                 textarea.value =
                     textarea.value.substring(0, cursorPos) +
@@ -1031,7 +1039,7 @@
                 textarea.selectionEnd = cursorPos + reference.length;
                 textarea.focus();
 
-                showStatus('Cell reference inserted', true);
+                showStatus('Cell range reference inserted', true);
             });
         } catch (error) {
             showStatus(`Error inserting cell reference: ${error.message}`, false);

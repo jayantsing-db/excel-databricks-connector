@@ -894,3 +894,7 @@ textarea.ms-TextField-field {
 #sql-mode .panel-content {
     background-color: #f9f9f9;
 }
+
+input[type="password"].ms-TextField-field {
+    padding: 10px 12px 10px 12px;
+}
