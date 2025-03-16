@@ -165,6 +165,7 @@
                 Excel.run(async (context) => {
                     let sheet;
                     let startCell;
+                    let startCellAddress = '';
 
                     if (!data || !data.length) {
                         await context.sync();
@@ -197,14 +198,17 @@
                                     cellAddress = cellAddress.split('!')[1];
                                 }
                                 startCell = sheet.getRange(cellAddress);
+                                startCellAddress = cellAddress;
                             } catch (e) {
                                 console.error("Invalid cell reference for new sheet:", e);
                                 // Fall back to A1
                                 startCell = sheet.getRange("A1");
+                                startCellAddress = "A1";
                             }
                         } else {
                             // Default to A1
                             startCell = sheet.getRange("A1");
+                            startCellAddress = "A1";
                         }
 
                         // Override append setting for new sheets
@@ -220,18 +224,32 @@
                             // Use specified start cell
                             try {
                                 startCell = sheet.getRange(destination.startCell);
+                                startCellAddress = destination.startCell;
                             } catch (e) {
                                 console.error("Invalid cell reference:", e);
                                 // Fall back to A1
                                 startCell = sheet.getRange("A1");
+                                startCellAddress = "A1";
                             }
                         } else {
                             // Default to A1
                             startCell = sheet.getRange("A1");
+                            startCellAddress = "A1";
                         }
 
                         // Use the append setting as provided
                         await writeDataToSheet(sheet, startCell, data, destination.appendData);
+                    }
+
+                    // After writing data, select the start cell to focus there
+                    if (startCellAddress) {
+                        try {
+                            // Select the start cell to focus the user's attention
+                            const cellToSelect = sheet.getRange(startCellAddress);
+                            cellToSelect.select();
+                        } catch (e) {
+                            console.error("Error selecting cell after data write:", e);
+                        }
                     }
 
                     await context.sync();
@@ -254,6 +272,7 @@
         const match = address.match(/[A-Z]+|\d+/g);
         let startColumn = 0;
         let startRow = 0;
+        let cellToSelectAfterWrite = null;
 
         if (match && match.length >= 2) {
             // Convert column letters to number (A=1, B=2, etc.)
@@ -301,6 +320,9 @@
                 // Set the values
                 dataRange.values = rows;
             }
+
+            // Set the cell to select after write - in this case, the starting cell
+            cellToSelectAfterWrite = startCell;
         } else {
             // For append mode, find the last row with data
             let lastRow = startRow;
@@ -344,11 +366,22 @@
                 const appendStartCell = sheet.getCell(lastRow - 1, startColumn - 1);
                 const appendRange = appendStartCell.getResizedRange(rows.length - 1, headers.length - 1);
                 appendRange.values = rows;
+
+                // Set the cell to select after write - in this case, the first cell of the appended data
+                cellToSelectAfterWrite = appendStartCell;
+            } else {
+                // If no data to append, select the original start cell
+                cellToSelectAfterWrite = startCell;
             }
         }
 
         // Auto-fit columns
         sheet.getUsedRange().format.autofitColumns();
+
+        // Select the appropriate cell after the operation is complete
+        if (cellToSelectAfterWrite) {
+            cellToSelectAfterWrite.select();
+        }
     }
 
     async function processSqlQueryWithCellReferences(sqlQuery) {
