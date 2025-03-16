@@ -728,3 +728,162 @@ textarea.ms-TextField-field {
 .ms-Dropdown:active {
     border-color: #FF3621;
 }
+
+/* Panel Styling */
+.panel-section {
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+}
+
+.panel-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.panel-toggle {
+    font-size: 12px;
+    color: #555;
+}
+
+.toggle-icon {
+    transition: transform 0.2s ease;
+}
+
+.panel-content {
+    padding: 15px;
+    background-color: #ffffff;
+}
+
+/* Results Destination Styling */
+.result-destination-group {
+    margin-bottom: 0 !important;
+}
+
+.cell-selector-container {
+    margin-bottom: 12px;
+}
+
+.input-with-button {
+    display: flex;
+    align-items: center;
+}
+
+.input-with-button .ms-TextField-field {
+    flex-grow: 1;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-with-button .ms-Button {
+    height: 38px;
+    width: 38px;
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Checkbox styling */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ms-Checkbox {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-bottom: 4px;
+}
+
+.ms-Checkbox-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.ms-Checkbox-label {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+
+.ms-Checkbox-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #c8c8c8;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.ms-Checkbox-input:checked + .ms-Checkbox-label::before {
+    background-color: #FF3621;
+    border-color: #FF3621;
+}
+
+.ms-Checkbox-input:checked + .ms-Checkbox-label::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 3px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.ms-Checkbox-input:focus + .ms-Checkbox-label::before {
+    box-shadow: 0 0 0 2px rgba(255, 54, 33, 0.2);
+}
+
+/* Icon for cell selection */
+.ms-Icon--Bullseye {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23555"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>');
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* For a consistent look between SQL and Genie panels */
+#genie-destination-panel {
+    margin-bottom: 20px;
+}
+
+/* Add some extra space between the panel and the ask button */
+#genie-destination-panel + .form-group {
+    margin-top: 24px;
+}
+
+/* Consistent result panel look */
+#genie-mode .panel-content,
+#sql-mode .panel-content {
+    background-color: #f9f9f9;
+}

@@ -86,6 +86,43 @@
     </script>
 
     <script type="text/javascript" src="app.js"></script>
+
+    <script type="text/javascript">
+        function togglePanel(element) {
+            const panel = element.parentElement.nextElementSibling;
+            const toggleIcon = element.querySelector('.toggle-icon');
+
+            if (panel.style.display === 'none') {
+                panel.style.display = 'block';
+                toggleIcon.textContent = '▼';
+            } else {
+                panel.style.display = 'none';
+                toggleIcon.textContent = '►';
+            }
+
+            // Save panel state in localStorage
+            const panelId = element.parentElement.parentElement.id;
+            if (panelId) {
+                localStorage.setItem(`panel_${panelId}`, panel.style.display === 'none' ? 'collapsed' : 'expanded');
+            }
+        }
+
+        // Initialize panel states on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const panels = document.querySelectorAll('.panel-section');
+            panels.forEach(panel => {
+                const panelId = panel.id;
+                const savedState = localStorage.getItem(`panel_${panelId}`);
+                const panelContent = panel.querySelector('.panel-content');
+                const toggleIcon = panel.querySelector('.toggle-icon');
+
+                if (savedState === 'collapsed') {
+                    panelContent.style.display = 'none';
+                    toggleIcon.textContent = '►';
+                }
+            });
+        });
+    </script>
 </head>
 
 <body class="ms-font-m ms-Fabric">
@@ -133,6 +170,41 @@
                 <p class="field-help">Use ${A1} syntax to reference Excel cells in your query</p>
             </div>
 
+            <div class="panel-section">
+                <div class="panel-header">
+                    <h3>Results Destination</h3>
+                    <div class="panel-toggle" onclick="togglePanel(this)">
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="form-group result-destination-group">
+                        <div class="cell-selector-container">
+                            <label class="ms-Label">Start Cell</label>
+                            <div class="input-with-button">
+                                <input type="text" id="result-start-cell" class="ms-TextField-field" placeholder="A1" />
+                                <button id="select-result-cell" class="ms-Button ms-Button--icon" title="Select Cell">
+                                    <i class="ms-Icon ms-Icon--Bullseye"></i>
+                                </button>
+                            </div>
+                            <p class="field-help">Leave empty to use A1</p>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <div class="ms-Checkbox">
+                                <input type="checkbox" id="result-new-sheet" class="ms-Checkbox-input" />
+                                <label for="result-new-sheet" class="ms-Checkbox-label">Create new sheet for results</label>
+                            </div>
+
+                            <div class="ms-Checkbox">
+                                <input type="checkbox" id="result-append-data" class="ms-Checkbox-input" />
+                                <label for="result-append-data" class="ms-Checkbox-label">Append to existing data</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <button id="run-query" class="ms-Button ms-Button--primary">
                     <span class="ms-Button-label">Run SQL Query</span>
@@ -151,6 +223,41 @@
             <div class="form-group">
                 <label class="ms-Label">Ask a question about your data</label>
                 <textarea id="genie-question" class="ms-TextField-field" rows="3" placeholder="Example: Which customers made the most purchases last month?"></textarea>
+            </div>
+
+            <div class="panel-section" id="genie-destination-panel">
+                <div class="panel-header">
+                    <h3>Results Destination</h3>
+                    <div class="panel-toggle" onclick="togglePanel(this)">
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="form-group result-destination-group">
+                        <div class="cell-selector-container">
+                            <label class="ms-Label">Start Cell</label>
+                            <div class="input-with-button">
+                                <input type="text" id="genie-result-start-cell" class="ms-TextField-field" placeholder="A1" />
+                                <button id="genie-select-result-cell" class="ms-Button ms-Button--icon" title="Select Cell">
+                                    <i class="ms-Icon ms-Icon--Bullseye"></i>
+                                </button>
+                            </div>
+                            <p class="field-help">Leave empty to use A1</p>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <div class="ms-Checkbox">
+                                <input type="checkbox" id="genie-result-new-sheet" class="ms-Checkbox-input" />
+                                <label for="genie-result-new-sheet" class="ms-Checkbox-label">Create new sheet for results</label>
+                            </div>
+
+                            <div class="ms-Checkbox">
+                                <input type="checkbox" id="genie-result-append-data" class="ms-Checkbox-input" />
+                                <label for="genie-result-append-data" class="ms-Checkbox-label">Append to existing data</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
